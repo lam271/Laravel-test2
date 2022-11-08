@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductRequest;
 
 class HomeController extends Controller
 {   
@@ -49,12 +50,13 @@ class HomeController extends Controller
         return view('clients.add', $this->data);
     }
 
-    public function postAdd(Request $request){
+    public function postAdd(ProductRequest $request){
         
-        $rules = [
-            'product_name' => 'required|min:6',
-            'product_price' => 'required|integer'
-        ];
+        dd($request);
+        // $rules = [
+        //     'product_name' => 'required|min:6',
+        //     'product_price' => 'required|integer'
+        // ];
         
         // $message = [
         //     'product_name.required' => 'Tên sản phẩm bắt buộc phải nhập',
@@ -63,13 +65,13 @@ class HomeController extends Controller
         //     'product_price.integer' => 'Giá sản phẩm phải là số'
         // ];
 
-        $message = [
-            'required' => 'trường :attribute bắt buộc phải nhập',
-            'min' => 'Trường :attribute không được nhỏ hơn :min ký tự',
-            'integer' => 'Trường :attribute phải là số'
-        ];
+        // $message = [
+        //     'required' => 'trường :attribute bắt buộc phải nhập',
+        //     'min' => 'Trường :attribute không được nhỏ hơn :min ký tự',
+        //     'integer' => 'Trường :attribute phải là số'
+        // ];
             
-        $request->validate($rules, $message);
+        // $request->validate($rules, $message);
 
         //Xử lý việc thêm dữ liệu vào database
     }
