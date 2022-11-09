@@ -6,6 +6,7 @@ use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Validator;
+use App\Rules\Uppercase;
 
 class HomeController extends Controller
 {   
@@ -52,10 +53,12 @@ class HomeController extends Controller
     }
 
     public function postAdd(Request $request){
-
+        dd('ok');
         $rules = [
-            'product_name' => 'required|min:6',
-            'product_price' => 'required|integer'
+            'product_name' => ['required', 'min:6', function($attributes, $value, $fail){
+                isUppercase($value, 'Trường :attribute không hợp lệ' ,$fail);
+            }],
+            'product_price' => ['required', 'integer']
         ];
         
         // $messages = [
@@ -68,7 +71,8 @@ class HomeController extends Controller
         $messages = [
             'required' => 'trường :attribute bắt buộc phải nhập',
             'min' => 'Trường :attribute không được nhỏ hơn :min ký tự',
-            'integer' => 'Trường :attribute phải là số'
+            'integer' => 'Trường :attribute phải là số',
+            // 'uppercase' => 'Trường :attribute phải viết hoa'
         ];
 
         $attributes = [
@@ -148,5 +152,6 @@ class HomeController extends Controller
             return response()->download($file, $fileName, $header);
         }
     }
+
 }
 

@@ -5,7 +5,8 @@ namespace App\Rules;
 use Illuminate\Contracts\Validation\Rule;
 
 class Uppercase implements Rule
-{
+{   
+    private $attribute = null;
     /**
      * Create a new rule instance.
      *
@@ -24,8 +25,14 @@ class Uppercase implements Rule
      * @return bool
      */
     public function passes($attribute, $value)
-    {
+    {   
+        $this->attribute = $attribute;
         //
+        if ($value===mb_strtoupper($value, 'UTF-8')){
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -34,7 +41,15 @@ class Uppercase implements Rule
      * @return string
      */
     public function message()
-    {
-        return 'The validation error message.';
+    {   
+        // return 'Trường :attribute không hợp lệ';
+
+        $customMessage = 'validation.custom.'.($this->attribute).'.uppercase';
+
+        if(trans($customMessage)!=$customMessage){
+            return trans($customMessage);
+        }
+
+        return trans('validation.uppercase');
     }
 }
