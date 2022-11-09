@@ -96,7 +96,14 @@
 @endsection
 
 @section('content')
+    @if(session('msg'))
+    <div class="alert alert-{{session('type')}}">
+        {{session('msg')}}
+    </div>
+    @endif
     <h1>Trang chủ</h1>
+
+
     @datetime('2022-12-12 15:00:00')
     @include('clients.contents.slide')
     @include('clients.contents.about')
@@ -110,8 +117,9 @@
     <p>môi trường dev</p>
     @endenv    
 
-
+    
     <x-alert  type="info" :content="$message" data-icon="facebook" />
+    {{-- <x-package-alert /> --}}
 
     {{-- <x-input.button/> --}}
 

@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Http\Request; 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Exceptions\HttpResponseException;
+
 
 class ProductRequest extends FormRequest
 {
@@ -13,7 +17,7 @@ class ProductRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -47,7 +51,7 @@ class ProductRequest extends FormRequest
         ];
     }
 
-    public function withValidator($validator)
+    protected function withValidator($validator)
     {
         $validator->after(function ($validator) {
             if($validator->errors()->count()>0){
@@ -55,5 +59,20 @@ class ProductRequest extends FormRequest
             }
             
         });
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'create_at' => date('Y-m-d H:i:s'),
+        ]);
+    }
+
+    protected function failedAuthorization(){
+        // throw new AuthorizationException('Bạn đang truy cập vào khu vực cấm');
+
+        // throw new HttpResponseException(redirect('/')->with('msg', 'Bạn không có quyền truy cập')->with('type', 'danger'));
+
+        throw new HttpResponseException(abort('404'));
     }
 }

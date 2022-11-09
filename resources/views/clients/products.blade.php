@@ -3,14 +3,16 @@
     {{$title}}
 @endsection
 
-{{-- @section('sidebar')
+@section('sidebar')
     @parent
     <h3>Product Sidebar</h3>
-@endsection --}}
+@endsection
 
 @section('content')
+    @if(session('msg'))
+    <div class="alert alert-success">{{session('msg')}}</div>
+    @endif
     <h1>Sản Phẩm</h1>
-    <x-package-alert />
     @push('scripts')
         <script>
             console.log('push lần hai');
