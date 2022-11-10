@@ -7,28 +7,21 @@
     <h1>Thêm sản phẩm</h1>
     <form action="{{route('post-add')}}" method="POST" id="product-form">
         
-        @error('msg')
+        <div class="alert alert-danger text-center msg" style="display: none;"></div>
+        {{-- @error('msg')
             <div class="alert alert-danger text-center">{{$message}}</div>
-        @enderror
+        @enderror --}}
         <div class="mb-3">
             <label for="">Tên sản phẩm</label>
             <input type="text" class="form-control" name="product_name" placeholder="Tên sản phẩm..."
             value="{{old('product_name')}}">
-            @error('product_name')
-                <span style="color: red">
-                    {{$message}}
-                </span>
-            @enderror
+                <span style="color: red" class="error product_name_error"></span>
         </div>
 
         <div class="mb-3">
             <label for="">Giá sản phẩm</label>
             <input type="text" class="form-control" name="product_price" placeholder="Giá sản phẩm..." value="{{old('product_price')}}">
-            @error('product_price')
-                <span style="color: red">
-                    {{$message}}
-                </span>
-            @enderror
+                <span style="color: red" class="error product_price_error"></span>
         </div>
 
         <button type="submit" class="btn btn-primary">Thêm mới</button>
@@ -42,11 +35,13 @@
 @endsection
 
 @section('js')
+    
+
     <script>
         $(document).ready(function(){
             $('#product-form').on('submit', function(e){
                 e.preventDefault();
-
+                
                 let productName = $('input[name="product_name"]').val().trim();
 
                 let productPrice = $('input[name="product_price"]').val().trim();
@@ -55,22 +50,35 @@
 
                 let csrfToken = $(this).find('input[name="_token"]').val();
 
+                $('.error').text('');
 
                 $.ajax({
                     url: actionUrl,
                     type: 'POST',
                     data: {
-                        productName: productName,
-                        productPrice: productPrice,
+                        product_name: productName,
+                        product_price: productPrice,
                         _token: csrfToken
-
                     },
-                    dataType: 'text',
+                    dataType: 'json',
                     success: function(response){
                         console.log(response);
                     },
                     error: function(error){
-                        console.log(error);
+
+                        $('.msg').show();
+
+                        let responseJSON = error.responseJSON.errors;
+
+                        console.log(responseJSON);
+
+                        if(Object.keys(responseJSON).length>0){
+                            $('.msg').text(responseJSON.msg);
+                            for (let key in responseJSON){
+                                $('.'+key+'_error').text(responseJSON[key][0]);
+                            }
+                        }
+
                     }
                 });
             });

@@ -13,25 +13,6 @@ class HomeController extends Controller
     public $data = [];
     public function index() {
 
-        // $this->data['welcome'] = 'Học lập trình tại';
-        // $this->data['content'] = '<h3>Chương 1: Nhập môn Laravel</h3>
-        // <p>Kiến thức 1</p>
-        // <p>Kiến thức 1</p>
-        // <p>Kiến thức 1</p>
-        // ';
-
-        // $this->data['index'] = 1;
-
-        // $this->data['dataArr'] = [
-        //     'Item1',
-        //     'Item2',
-        //     'Item3'
-        // ];
-
-        // $this->data['number'] = 10; 
-
-        // $this->data['message'] = 'Đăt hàng thành công';
-
         $this->data['title'] = 'Trang Chủ';
 
         $this->data['message'] = 'Đăng kí tài khoản thành công';
@@ -52,12 +33,17 @@ class HomeController extends Controller
         return view('clients.add', $this->data);
     }
 
-    public function postAdd(Request $request){
-        dd('ok');
+    public function postAdd(ProductRequest $request){
+        // return 'ok';
+        // $rules = [
+        //     'product_name' => ['required', 'min:6', function($attribute, $value, $fail){
+        //         isUppercase($value, 'Trường :attribute không hợp lệ' ,$fail);
+        //     }],
+        //     'product_price' => ['required', 'integer']
+        // ];
+
         $rules = [
-            'product_name' => ['required', 'min:6', function($attributes, $value, $fail){
-                isUppercase($value, 'Trường :attribute không hợp lệ' ,$fail);
-            }],
+            'product_name' => ['required', 'min:6'],
             'product_price' => ['required', 'integer']
         ];
         
@@ -80,19 +66,25 @@ class HomeController extends Controller
             'product_price' => 'Giá sản phẩm'
         ];
 
-        $validator = Validator::make($request->all(), $rules, $messages, $attributes);
+        // $validator = Validator::make($request->all(), $rules, $messages, $attributes);
+
+        // $validator->validate();
+
+        // $request->validate($rules, $messages);
+
+        return response()->json(['status'=>'success']);
 
         //$validator->validate();
 
-        if ($validator->fails()) {
-            // return 'validate thất bại';
-            $validator->errors()->add('msg', 'Vui lòng kiểm tra lại dữ liệu');
-        }else{
-            // return 'validate thành công';
-            return redirect()->route('product')->with('msg', 'validate thành công');
-        }
+        // if ($validator->fails()) {
+        //     // return 'validate thất bại';
+        //     $validator->errors()->add('msg', 'Vui lòng kiểm tra lại dữ liệu');
+        // }else{
+        //     // return 'validate thành công';
+        //     return redirect()->route('product')->with('msg', 'validate thành công');
+        // }
 
-        return back()->withErrors($validator);
+        // return back()->withErrors($validator);
 
             
         // $request->validate($rules, $message);
@@ -152,6 +144,5 @@ class HomeController extends Controller
             return response()->download($file, $fileName, $header);
         }
     }
-
 }
 
