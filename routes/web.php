@@ -72,3 +72,12 @@ Route::post('demo-response', function(Request $request){
 Route::get('dowloand-image', [HomeController::class, 'downloadImage'])->name('download-image');
 
 Route::get('dowloand-doc', [HomeController::class, 'downloadDoc'])->name('download-doc');
+
+Route::prefix('users')->name('users.')->group(function(){
+    Route::get('/', [UserController::class, 'index'])->name('index');
+
+    Route::get('/add', [UserController::class, 'add'])->name('add');
+
+    Route::post('/add', [UserController::class, 'postAdd'])->name('postAdd');
+
+});

@@ -104,10 +104,10 @@
     <h1>Trang chủ</h1>
 
 
-    @datetime('2022-12-12 15:00:00')
+    {{-- @datetime('2022-12-12 15:00:00') --}}
     @include('clients.contents.slide')
     @include('clients.contents.about')
-    @datetime('2022-11-11 17:00:00') 
+    {{-- @datetime('2022-11-11 17:00:00')  --}}
 
     @env('production')
     <p>Môi trường production</p>
